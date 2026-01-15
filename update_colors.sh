@@ -6,7 +6,8 @@ js_file="lua/llawn/colors/palette_generator.js"
 
 # Extract the colors array from Lua and convert to JS
 sed -n '/^local colors = {/,/^}/p' "$lua_file" | \
-sed '1s/local colors = {/const colorDatabase = [/; $s/^  }$/];/' > temp_colors.js
+sed '1s/local colors = {/const colorDatabase = [/; $s/^  }$/];/' | \
+sed 's/=0x/:0x/g; s/name=/name:/g; s/color=/color:/g' > temp_colors.js
 
 # Replace the array in the JS file using awk
 awk -v colors_file="temp_colors.js" '
