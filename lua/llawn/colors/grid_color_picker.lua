@@ -1,5 +1,5 @@
-local colors = require('llawn.plugins.local.colors')
-local utils = require('llawn.plugins.local.colors_utils')
+local colors = require('llawn.colors.colors')
+local utils = require('llawn.colors.colors_utils')
 
 local M = {}
 

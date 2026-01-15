@@ -1,7 +1,7 @@
 --- Neovim commands for palette generation
 
-local palette_gen = require('llawn.plugins.local.palette_generator')
-local palette_mgr = require('llawn.plugins.local.palette_manager')
+local palette_gen = require('llawn.colors.palette_generator')
+local palette_mgr = require('llawn.colors.palette_manager')
 
 local M = {}
 
@@ -53,7 +53,7 @@ function M.show_palette(base_color, method, count, options)
 
   -- Set up key mappings
   vim.api.nvim_buf_set_keymap(buf, 'n', 'q', ':close<CR>', {noremap = true, silent = true})
-  vim.api.nvim_buf_set_keymap(buf, 'n', 's', ':lua require("llawn.plugins.local.palette_commands").save_current_palette()<CR>',
+  vim.api.nvim_buf_set_keymap(buf, 'n', 's', ':lua require("llawn.colors.palette_commands").save_current_palette()<CR>',
                               {noremap = true, silent = true})
 
   -- Store the palette for saving
@@ -140,9 +140,9 @@ function M.list_palettes()
 
   -- Set up key mappings
   vim.api.nvim_buf_set_keymap(buf, 'n', 'q', ':close<CR>', {noremap = true, silent = true})
-  vim.api.nvim_buf_set_keymap(buf, 'n', 'l', ':lua require("llawn.plugins.local.palette_commands").load_palette_under_cursor()<CR>',
+  vim.api.nvim_buf_set_keymap(buf, 'n', 'l', ':lua require("llawn.colors.palette_commands").load_palette_under_cursor()<CR>',
                               {noremap = true, silent = true})
-  vim.api.nvim_buf_set_keymap(buf, 'n', 'd', ':lua require("llawn.plugins.local.palette_commands").delete_palette_under_cursor()<CR>',
+  vim.api.nvim_buf_set_keymap(buf, 'n', 'd', ':lua require("llawn.colors.palette_commands").delete_palette_under_cursor()<CR>',
                               {noremap = true, silent = true})
 end
 
@@ -228,7 +228,7 @@ function M.show_loaded_palette(palette, name, metadata)
 
   -- Set up key mappings
   vim.api.nvim_buf_set_keymap(buf, 'n', 'q', ':close<CR>', {noremap = true, silent = true})
-  vim.api.nvim_buf_set_keymap(buf, 'n', 'e', ':lua require("llawn.plugins.local.palette_commands").export_current_palette()<CR>',
+  vim.api.nvim_buf_set_keymap(buf, 'n', 'e', ':lua require("llawn.colors.palette_commands").export_current_palette()<CR>',
                               {noremap = true, silent = true})
 
   -- Store the palette for export

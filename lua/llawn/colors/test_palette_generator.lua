@@ -1,7 +1,7 @@
 --- Test the palette generator functionality
 
-local palette_gen = require('llawn.plugins.local.palette_generator')
-local palette_mgr = require('llawn.plugins.local.palette_manager')
+local palette_gen = require('llawn.colors.palette_generator')
+local palette_mgr = require('llawn.colors.palette_manager')
 
 -- Test basic functionality
 print("=== Color Palette Generator Tests ===\n")

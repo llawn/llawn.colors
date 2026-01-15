@@ -4,8 +4,8 @@
 local MAX_LINES = 5000  -- Constant for maximum lines to process
 local ENABLED = true
 
-local colors = require('llawn.plugins.local.colors')
-local colors_utils = require('llawn.plugins.local.colors_utils')
+local colors = require('llawn.colors.colors')
+local colors_utils = require('llawn.colors.colors_utils')
 
 local ns_highlight = vim.api.nvim_create_namespace('color_highlights')
 local ns_virtual = vim.api.nvim_create_namespace('color_virtual')

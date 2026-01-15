@@ -1,8 +1,8 @@
 --- Color palette generation algorithms
 --- Generates harmonious color palettes from existing color database
 
-local colors = require('llawn.plugins.local.colors')
-local colors_utils = require('llawn.plugins.local.colors_utils')
+local colors = require('llawn.colors.colors')
+local colors_utils = require('llawn.colors.colors_utils')
 
 local M = {}
 

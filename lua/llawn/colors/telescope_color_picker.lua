@@ -1,8 +1,8 @@
 --- A Neovim plugin that provides an interactive color picker using Telescope.
 --- Features include fuzzy search and visual color comparison previews.
 
-local colors = require('llawn.plugins.local.colors')
-local colors_utils = require('llawn.plugins.local.colors_utils')
+local colors = require('llawn.colors.colors')
+local colors_utils = require('llawn.colors.colors_utils')
 
 -- =============================================================================
 -- TELESCOPE INTEGRATION
