@@ -5,6 +5,45 @@ local M = {}
 -- Storage for user-generated palettes
 M.saved_palettes = {}
 
+-- File path for persistence
+local palette_file = vim.fn.stdpath('config') .. '/palettes.lua'
+
+--- Load palettes from file
+local function load_palettes()
+  if vim.fn.filereadable(palette_file) == 1 then
+    local ok, data = pcall(dofile, palette_file)
+    if ok and type(data) == 'table' then
+      M.saved_palettes = data
+    end
+  end
+end
+
+--- Save palettes to file
+local function save_palettes()
+  local lines = {'return {'}
+  for name, palette_data in pairs(M.saved_palettes) do
+    table.insert(lines, string.format('  ["%s"] = {', name:gsub('"', '\\"')))
+    table.insert(lines, '    colors = {')
+    for _, color in ipairs(palette_data.colors) do
+      table.insert(lines, string.format('      {name="%s", color=0x%06x},', color.name, color.color))
+    end
+    table.insert(lines, '    },')
+    table.insert(lines, '    metadata = {')
+    table.insert(lines, string.format('      method="%s",', palette_data.metadata.method))
+    table.insert(lines, string.format('      base_color="%s",', palette_data.metadata.base_color))
+    table.insert(lines, '      options={},')
+    table.insert(lines, string.format('      created_at="%s",', palette_data.metadata.created_at))
+    table.insert(lines, string.format('      color_count=%d,', palette_data.metadata.color_count))
+    table.insert(lines, '    },')
+    table.insert(lines, '  },')
+  end
+  table.insert(lines, '}')
+  vim.fn.writefile(lines, palette_file)
+end
+
+-- Load palettes on module load
+load_palettes()
+
 --- Save a palette with metadata
 ---@param palette table Array of color objects
 ---@param name string Palette name
@@ -21,18 +60,19 @@ function M.save_palette(palette, name, method, base_color, options)
     return false, "Palette name already exists"
   end
 
-  M.saved_palettes[name] = {
-    colors = palette,
-    metadata = {
-      method = method,
-      base_color = base_color,
-      options = options or {},
-      created_at = os.date("%Y-%m-%d %H:%M:%S"),
-      color_count = #palette
-    }
-  }
+   M.saved_palettes[name] = {
+     colors = palette,
+     metadata = {
+       method = method,
+       base_color = base_color,
+       options = options or {},
+       created_at = os.date("%Y-%m-%d %H:%M:%S"),
+       color_count = #palette
+     }
+   }
 
-  return true
+   save_palettes()
+   return true
 end
 
 --- Load a saved palette
@@ -57,12 +97,13 @@ end
 ---@param name string Palette name
 ---@return boolean Success status
 function M.delete_palette(name)
-  if M.saved_palettes[name] then
-    M.saved_palettes[name] = nil
-    return true
-  end
-  return false
-end
+   if M.saved_palettes[name] then
+     M.saved_palettes[name] = nil
+     save_palettes()
+     return true
+   end
+   return false
+ end
 
 --- Export palette to Lua code string
 ---@param palette table Array of color objects
@@ -113,18 +154,19 @@ function M.import_palette_from_lua(lua_code, name)
     return false, "No valid colors found in Lua code"
   end
 
-  M.saved_palettes[name] = {
-    colors = colors,
-    metadata = {
-      method = "imported",
-      base_color = "unknown",
-      options = {},
-      created_at = os.date("%Y-%m-%d %H:%M:%S"),
-      color_count = #colors
-    }
-  }
+   M.saved_palettes[name] = {
+     colors = colors,
+     metadata = {
+       method = "imported",
+       base_color = "unknown",
+       options = {},
+       created_at = os.date("%Y-%m-%d %H:%M:%S"),
+       color_count = #colors
+     }
+   }
 
-  return true
+   save_palettes()
+   return true
 end
 
 --- Get palette statistics
