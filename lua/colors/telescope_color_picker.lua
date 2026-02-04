@@ -1,8 +1,8 @@
 --- A Neovim plugin that provides an interactive color picker using Telescope.
 --- Features include fuzzy search and visual color comparison previews.
 
-local colors = require("llawn.colors.colors")
-local colors_utils = require("llawn.colors.colors_utils")
+local colors = require("colors.colors")
+local colors_utils = require("colors.colors_utils")
 
 -- =============================================================================
 -- TELESCOPE INTEGRATION
@@ -108,7 +108,7 @@ local dynamic_previewer = previewers.new_buffer_previewer({
 				table.insert(lines, string.rep(" ", 36))
 
 				-- Highlight Left Block (Target)
-        assert(type(target_hex) == "string", "target_hex must be a string")
+				assert(type(target_hex) == "string", "target_hex must be a string")
 				local input_grp = "PreviewInput_" .. target_hex:gsub("#", "")
 				table.insert(hl_ops, {
 					group = input_grp,
@@ -198,7 +198,7 @@ local dynamic_previewer = previewers.new_buffer_previewer({
 
 		-- SECTION C: Contrast Checks for Target Color
 		if (is_hex_mode and target_hex) or (is_name_mode and target_color) then
-      assert(type(target_hex) == "string", "target_hex must be a string")
+			assert(type(target_hex) == "string", "target_hex must be a string")
 			local target_clean = target_hex:gsub("#", "")
 
 			-- Target Color Header

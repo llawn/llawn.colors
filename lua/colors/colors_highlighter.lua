@@ -1,11 +1,9 @@
 --- @brief Simple color highlighter for Neovim
 --- Highlights hex colors with their own background color and inline hints
 
-local MAX_LINES = 5000 -- Constant for maximum lines to process
-local ENABLED = true
-
-local colors = require("llawn.colors.colors")
-local colors_utils = require("llawn.colors.colors_utils")
+local colors = require("colors.colors")
+local colors_utils = require("colors.colors_utils")
+local conf = require("colors.conf")
 
 local ns_highlight = vim.api.nvim_create_namespace("color_highlights")
 local ns_virtual = vim.api.nvim_create_namespace("color_virtual")
@@ -100,6 +98,8 @@ end
 --- @param pattern string: The pattern to scan
 --- @param prefix_len integer: The prefix length (Prefix length 1 for '#' and 2 for '0x')
 local function scan_and_highlight(bufnr, line, line_idx, pattern, prefix_len)
+	local min_length = 1
+	local max_length = 6
 	local init = 1
 	while true do
 		local s, e = line:find(pattern, init)
@@ -111,7 +111,7 @@ local function scan_and_highlight(bufnr, line, line_idx, pattern, prefix_len)
 		local next_char = line:sub(e + 1, e + 1)
 
 		-- Validation
-		local valid_length = #hex_digits >= 1 and #hex_digits <= 6
+		local valid_length = #hex_digits >= min_length and #hex_digits <= max_length
 		local is_not_hex = next_char == "" or not next_char:match("%x")
 		local is_not_word = next_char == "" or not next_char:match("[_G-Zg-z]")
 
@@ -132,7 +132,7 @@ end
 --- to prevent performance issues.
 --- @param bufnr integer|nil: The buffer number where the highlights and hints will be displayed (defaults to 0).
 local function highlight_colors(bufnr)
-	if not ENABLED then
+	if not conf.get("highlighting.enabled") then
 		return
 	end
 	bufnr = bufnr or 0
@@ -142,7 +142,8 @@ local function highlight_colors(bufnr)
 	vim.api.nvim_buf_clear_namespace(bufnr, ns_virtual, 0, -1)
 
 	local line_count = vim.api.nvim_buf_line_count(bufnr)
-	local lines = vim.api.nvim_buf_get_lines(bufnr, 0, math.min(line_count, MAX_LINES), false)
+	local max_lines = conf.get("highlighting.max_lines")
+	local lines = vim.api.nvim_buf_get_lines(bufnr, 0, math.min(line_count, max_lines), false)
 
 	for i, line in ipairs(lines) do
 		local line_idx = i - 1
@@ -155,27 +156,26 @@ local M = {}
 
 -- Toggle highlight_colors and hints
 function M.toggle()
-	if ENABLED then
-		ENABLED = false
+	local current_state = conf.get("highlighting.enabled")
+	if current_state then
+		conf.set("highlighting.enabled", false)
 		vim.api.nvim_buf_clear_namespace(0, ns_highlight, 0, -1)
 		vim.api.nvim_buf_clear_namespace(0, ns_virtual, 0, -1)
 	else
-		ENABLED = true
+		conf.set("highlighting.enabled", true)
 		highlight_colors(0)
 	end
 end
 
 function M.setup()
-	vim.keymap.set("n", "<leader>ct", M.toggle, { silent = true, desc = "Toggle color highlights" })
-	vim.api.nvim_create_autocmd({ "BufEnter", "BufRead" }, {
-		pattern = "*",
-		callback = function(args)
-			highlight_colors(args.buf)
-		end,
-	})
+	local toggle_key = conf.get("keymaps.toggle_highlight")
+	vim.keymap.set("n", toggle_key, M.toggle, { silent = true, desc = "Toggle color highlights" })
 
-	vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
-		pattern = "*",
+	local events = conf.get("autocmds.events")
+	local pattern = conf.get("autocmds.pattern")
+
+	vim.api.nvim_create_autocmd(events, {
+		pattern = pattern,
 		callback = function(args)
 			highlight_colors(args.buf)
 		end,
