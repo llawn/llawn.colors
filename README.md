@@ -26,7 +26,6 @@ Generate color palettes from 500+ predefined colors, manage palettes, and highli
 |-------------|--------|-------------|
 | ![nvim-cmp](https://img.shields.io/badge/nvim--cmp-✓%20Supported-green?style=flat) | ✅ Supported | Color name completion |
 | ![Telescope](https://img.shields.io/badge/Telescope-✓%20Supported-green?style=flat) | ✅ Supported | Fuzzy color picker |
-| ![Plenary](https://img.shields.io/badge/Plenary-✓%20Required-red?style=flat) | ✅ Required | Core utilities |
 
 ## Installation
 
@@ -39,7 +38,6 @@ Generate color palettes from 500+ predefined colors, manage palettes, and highli
 {
   "llawn/colors.nvim",
   dependencies = {
-    "nvim-lua/plenary.nvim",
     "nvim-telescope/telescope.nvim", -- optional, for telescope picker
   },
   config = function()
@@ -56,7 +54,6 @@ Generate color palettes from 500+ predefined colors, manage palettes, and highli
 local gh = function(x) return 'https://github.com/' .. x end
 
 vim.pack.add(gh('llawn/colors.nvim'))
-vim.pack.add(gh('nvim-lua/plenary.nvim'))
 vim.pack.add(gh('nvim-telescope/telescope.nvim')) -- optional, for telescope picker
 
 require("colors").setup({
