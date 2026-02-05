@@ -136,6 +136,10 @@ function M.palette_generate_complete(arg_lead, cmd_line, _)
 	return {}
 end
 
+function M.parse_args(line)
+	return parse_cmd_args(line)
+end
+
 function M.setup()
 	local cmp = require("cmp")
 	cmp.register_source("colors", source)
