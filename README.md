@@ -156,6 +156,8 @@ Or see [Example](examples/colors.lua) for colors.nvim
 
 ### Palette Generation
 
+<img width="626" height="318" alt="Image" src="https://github.com/user-attachments/assets/54629ce6-8ffe-492e-9479-887d4cae8bef" />
+
 ```vim
 :PaletteGenerate red monochromatic 5
 :PaletteGenerate blue equally 4
@@ -172,6 +174,8 @@ Color names with spaces must be enclosed in quotes
 
 #### Palette List Management
 
+<img width="621" height="372" alt="Image" src="https://github.com/user-attachments/assets/c2f5ef5c-5136-4bb9-b252-4d2fce9cc976" />
+
 - Open palette list: `<leader>cl` or `:PaletteList`
 - In palette list:
   - `l` - Load selected palette
@@ -181,6 +185,8 @@ Color names with spaces must be enclosed in quotes
   - `q` - Close list
 
 #### Palette View Controls
+
+<img width="626" height="443" alt="Image" src="https://github.com/user-attachments/assets/ad31787a-389e-4b83-b171-ae3dbf8ad39d" />
 
 When viewing a palette:
 
