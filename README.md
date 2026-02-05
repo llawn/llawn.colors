@@ -243,6 +243,8 @@ When viewing a palette:
 
 ## nvim-cmp Integration
 
+<img width="577" height="921" alt="Image" src="https://github.com/user-attachments/assets/4a7cb3d0-c6b0-4e1d-a24c-836dfe20bcd5" />
+
 colors.nvim provides an nvim-cmp source for color name completion with documentation and hex values.
 
 ### Setup
